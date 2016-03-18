@@ -89,7 +89,7 @@ const actionPopList = createAction({
 /**
  * Connect the buttons onclick to the action
  */
-removeButton.on('click', actionPopList.do.bind(actionPopList));
+removeButton.on('click', actionPopList);
 
 /**
  * An action that will take the value from the text input, push it onto the list and patch
@@ -108,7 +108,7 @@ const actionPushList = createAction({
 /**
  * Connect the buttons onclick to the action
  */
-addButton.on('click', actionPushList.do.bind(actionPushList));
+addButton.on('click', actionPushList);
 
 /**
  * Attach the VDOM
