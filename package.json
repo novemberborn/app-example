@@ -12,14 +12,14 @@
 		"url": "https://github.com/kitsonk/app-example.git"
 	},
 	"dependencies": {
-		"@reactivex/rxjs": "5.0.0-beta.2",
+		"@reactivex/rxjs": "5.0.0-beta.3",
 		"dojo-actions": ">2.0.0-alpha",
 		"dojo-compose": ">2.0.0-alpha",
 		"dojo-core": ">2.0.0-alpha",
 		"dojo-loader": "2.0.0-beta.2",
 		"dojo-widgets": ">2.0.0-alpha",
 		"immutable": "3.7.6",
-		"maquette": "2.2.1"
+		"maquette": "2.3.1"
 	},
 	"devDependencies": {
 		"codecov.io": "0.1.6",
@@ -39,6 +39,6 @@
 		"jsdom": "7.2.2",
 		"remap-istanbul": "0.5.1",
 		"tslint": "3.6.0",
-		"typescript": "1.8.7"
+		"typescript": "1.8.9"
 	}
 }

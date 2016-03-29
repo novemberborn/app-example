@@ -4,10 +4,14 @@
  */
 import createMemoryStore from 'dojo-widgets/util/createMemoryStore';
 import createButton from 'dojo-widgets/createButton';
+import createLayoutContainer from 'dojo-widgets/createLayoutContainer';
 import createList from 'dojo-widgets/createList';
+import createPanel from 'dojo-widgets/createPanel';
+import createResizePanel from 'dojo-widgets/createResizePanel';
 import createTextInput from 'dojo-widgets/createTextInput';
 import createWidget from 'dojo-widgets/createWidget';
-import { attach } from 'dojo-widgets/util/vdom';
+import projector from 'dojo-widgets/projector';
+import { Renderable } from 'dojo-widgets/mixins/createRenderable';
 import createAction from 'dojo-actions/createAction';
 
 /**
@@ -27,21 +31,51 @@ const listItems = [
 const widgetStore = createMemoryStore({
 	data: [
 		{ id: 'header', label: 'Dojo 2 Example Application'},
+		{ id: 'layout-container', classes: [ 'horizontal' ] },
+		{ id: 'panel-fixed', classes: [ 'fixed' ] },
+		{ id: 'panel-resize', classes: [ 'vertical', 'border-right', 'pad-1em' ], width: '200px' },
 		{ id: 'remove', label: 'Remove', name: 'remove' },
 		{ id: 'first-name', name: 'first-name', value: 'qat' },
 		{ id: 'add', label: 'Add', name: 'add' },
-		{ id: 'list', items: listItems }
+		{ id: 'list', classes: [ 'margin-1em' ], items: listItems }
 	]
 });
+
+const widgets: Renderable[] = [];
 
 /**
  * A header widget
  */
-createWidget({
+const header = createWidget({
 	id: 'header',
 	stateFrom: widgetStore,
 	tagName: 'h1'
 });
+
+widgets.push(header);
+
+const layoutContainer = createLayoutContainer({
+	id: 'layout-container',
+	stateFrom: widgetStore
+});
+
+widgets.push(layoutContainer);
+
+projector.append(widgets);
+
+const panelFixed = createPanel({
+	id: 'panel-fixed',
+	stateFrom: widgetStore
+});
+
+layoutContainer.append(panelFixed);
+
+const panelResize = createResizePanel({
+	id: 'panel-resize',
+	stateFrom: widgetStore
+});
+
+panelFixed.append(panelResize);
 
 /**
  * Button will remove item from list
@@ -51,6 +85,8 @@ const removeButton = createButton({
 	stateFrom: widgetStore
 });
 
+panelResize.append(removeButton);
+
 /**
  * A widget for collecting the value of the list
  */
@@ -58,6 +94,8 @@ const firstName = createTextInput({
 	id: 'first-name',
 	stateFrom: widgetStore
 });
+
+panelResize.append(firstName);
 
 /**
  * A widget that will add the value to the list
@@ -67,13 +105,17 @@ const addButton = createButton({
 	stateFrom: widgetStore
 });
 
+panelResize.append(addButton);
+
 /**
  * The list widget
  */
-createList({
+const list = createList({
 	id: 'list',
 	stateFrom: widgetStore
 });
+
+panelFixed.append(list);
 
 /**
  * An action that will pop an item from the list item and patch the items into the widgetstore
@@ -113,4 +155,4 @@ addButton.on('click', actionPushList);
 /**
  * Attach the VDOM
  */
-attach();
+projector.attach();
