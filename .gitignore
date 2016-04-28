@@ -8,13 +8,11 @@ dist
 _build
 /node_modules/*
 !/node_modules/dojo-actions/
-!/node_modules/dojo-actions/*
+!/node_modules/dojo-actions/**
 !/node_modules/dojo-compose/
-!/node_modules/dojo-compose/*
-!/node_modules/dojo-core/
-!/node_modules/dojo-core/*
+!/node_modules/dojo-compose/**
 !/node_modules/dojo-widgets/
-!/node_modules/dojo-widgets/*
+!/node_modules/dojo-widgets/**
 bower_components
 tests/typings/dist/
 .baseDir.ts
