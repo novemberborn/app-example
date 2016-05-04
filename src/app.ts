@@ -8,6 +8,7 @@ import createLayoutContainer from 'dojo-widgets/createLayoutContainer';
 import createList from 'dojo-widgets/createList';
 import createPanel from 'dojo-widgets/createPanel';
 import createResizePanel from 'dojo-widgets/createResizePanel';
+import createTabbedPanel from 'dojo-widgets/createTabbedPanel';
 import createTextInput from 'dojo-widgets/createTextInput';
 import createWidget from 'dojo-widgets/createWidget';
 import projector from 'dojo-widgets/projector';
@@ -31,13 +32,27 @@ const listItems = [
 const widgetStore = createMemoryStore({
 	data: [
 		{ id: 'header', label: 'Dojo 2 Example Application'},
+		{ id: 'tabbed-panel', classes: [ 'pad-1em' ] },
+		{ id: 'tab-1', label: 'Tab 1', closeable: false },
 		{ id: 'layout-container', classes: [ 'horizontal' ] },
 		{ id: 'panel-fixed', classes: [ 'fixed' ] },
 		{ id: 'panel-resize', classes: [ 'vertical', 'border-right', 'pad-1em' ], width: '200px' },
 		{ id: 'remove', label: 'Remove', name: 'remove' },
 		{ id: 'first-name', name: 'first-name', value: 'qat' },
 		{ id: 'add', label: 'Add', name: 'add' },
-		{ id: 'list', classes: [ 'margin-1em' ], items: listItems }
+		{ id: 'list', classes: [ 'margin-1em' ], items: listItems },
+		{ id: 'tab-2', classes: [ 'pad-1em' ], label: 'Tab 2', closeable: true },
+		{ id: 'tab-2-content', label: 'You can close me!' },
+		{ id: 'tab-3', classes: [ 'pad-1em' ], label: 'Tab 3', closeable: true },
+		{ id: 'tab-3-content', label: 'You can try to close me, but...'},
+		{ id: 'can-close', label: 'Can Close' }
+	]
+});
+
+const actionStore = createMemoryStore({
+	data: [
+		{ id: 'close-tab', canClose: false, enabled: true },
+		{ id: 'can-close-tab', enabled: true }
 	]
 });
 
@@ -54,12 +69,26 @@ const header = createWidget({
 
 widgets.push(header);
 
+const tabbedPanel = createTabbedPanel({
+	id: 'tabbed-panel',
+	stateFrom: widgetStore
+});
+
+widgets.push(tabbedPanel);
+
+const tab1 = createPanel({
+	id: 'tab-1',
+	stateFrom: widgetStore
+});
+
+tabbedPanel.append(tab1);
+
 const layoutContainer = createLayoutContainer({
 	id: 'layout-container',
 	stateFrom: widgetStore
 });
 
-widgets.push(layoutContainer);
+tab1.append(layoutContainer);
 
 projector.append(widgets);
 
@@ -117,6 +146,39 @@ const list = createList({
 
 panelFixed.append(list);
 
+const tab2 = createPanel({
+	id: 'tab-2',
+	stateFrom: widgetStore
+});
+
+tabbedPanel.append(tab2);
+
+tab2.append(createWidget({
+	id: 'tab-2-content',
+	stateFrom: widgetStore,
+	tagName: 'div'
+}));
+
+const tab3 = createPanel({
+	id: 'tab-3',
+	stateFrom: widgetStore
+});
+
+tabbedPanel.append(tab3);
+
+tab3.append(createWidget({
+	id: 'tab-3-content',
+	stateFrom: widgetStore,
+	tagName: 'div'
+}));
+
+const canCloseButton = createButton({
+	id: 'can-close',
+	stateFrom: widgetStore
+});
+
+tab3.append(canCloseButton);
+
 /**
  * An action that will pop an item from the list item and patch the items into the widgetstore
  */
@@ -151,6 +213,27 @@ const actionPushList = createAction({
  * Connect the buttons onclick to the action
  */
 addButton.on('click', actionPushList);
+
+const actionCloseTab3 = createAction({
+	type: 'close-tab',
+	do(options) {
+		if (options && options.event && !this.state.canClose) {
+			(<any> options.event).preventDefault();
+			return widgetStore.patch({ label: 'I said you can\'t close me' }, { id: 'tab-3-content' });
+		}
+	}
+});
+actionCloseTab3.observeState('close-tab', actionStore);
+tab3.on('close', actionCloseTab3);
+
+const actionCanCloseTab3 = createAction({
+	type: 'can-close-tab',
+	do() {
+		return actionStore.patch({ canClose: true }, { id: 'close-tab' })
+			.then(() => widgetStore.patch({ label: 'Now you can close the tab!!!' }, { id: 'tab-3-content'}));
+	}
+});
+canCloseButton.on('click', actionCanCloseTab3);
 
 /**
  * Attach the VDOM
