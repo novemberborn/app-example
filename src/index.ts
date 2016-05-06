@@ -8,7 +8,9 @@
 		{ name: 'dojo-widgets', location: 'node_modules/dojo-widgets' },
 		{ name: 'immutable', location: 'node_modules/immutable/dist' },
 		{ name: 'maquette', location: 'node_modules/maquette/dist' },
-		{ name: 'rxjs', location: 'node_modules/@reactivex/rxjs/dist/amd' }
+		{ name: 'rxjs', location: 'node_modules/@reactivex/rxjs/dist/amd' },
+		{ name: 'dojo', location: 'node_modules/dojo' },
+		{ name: 'dijit', location: 'node_modules/dijit' }
 	],
 	map: {
 		'*': {

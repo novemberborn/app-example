@@ -4,6 +4,7 @@
 /// <reference path="../node_modules/dojo-core/typings/symbol-shim/symbol-shim.d.ts" />
 /// <reference path="../node_modules/dojo-compose/typings/dojo-compose/dojo-compose.d.ts" />
 /// <reference path="../node_modules/dojo-loader/typings/dojo-loader/dojo-loader.d.ts" />
+/// <reference path="../node_modules/dojo-typings/dijit/1.11/modules.d.ts" />
 /// <reference path="../node_modules/dojo-widgets/typings/dojo-widgets/dojo-widgets.d.ts" />
 /// <reference path="../node_modules/@reactivex/rxjs/typings/main/ambient/es6-shim/index.d.ts" />
 

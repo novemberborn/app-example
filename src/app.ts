@@ -4,6 +4,7 @@
  */
 import createMemoryStore from 'dojo-widgets/util/createMemoryStore';
 import createButton from 'dojo-widgets/createButton';
+import createDijit from 'dojo-widgets/createDijit';
 import createLayoutContainer from 'dojo-widgets/createLayoutContainer';
 import createList from 'dojo-widgets/createList';
 import createPanel from 'dojo-widgets/createPanel';
@@ -12,8 +13,10 @@ import createTabbedPanel from 'dojo-widgets/createTabbedPanel';
 import createTextInput from 'dojo-widgets/createTextInput';
 import createWidget from 'dojo-widgets/createWidget';
 import projector from 'dojo-widgets/projector';
-import { Renderable } from 'dojo-widgets/mixins/createRenderable';
+import { Child } from 'dojo-widgets/mixins/createParentMixin';
 import createAction from 'dojo-actions/createAction';
+
+import * as DateTextBox from 'dijit/form/DateTextBox';
 
 /**
  * List items to populate list widget
@@ -56,7 +59,7 @@ const actionStore = createMemoryStore({
 	]
 });
 
-const widgets: Renderable[] = [];
+const widgets: Child[] = [];
 
 /**
  * A header widget
@@ -157,6 +160,27 @@ tab2.append(createWidget({
 	id: 'tab-2-content',
 	stateFrom: widgetStore,
 	tagName: 'div'
+}));
+
+/* Adding a Dojo 1 Dijit to a Dojo 2 Panel */
+tab2.append(createDijit({
+	Ctor: DateTextBox,
+	params: {
+		id: 'dateBox',
+		name: 'dateBox',
+		value: '16/06/1973'
+	},
+	tagName: 'input'
+}));
+
+tab2.append(createDijit({
+	Ctor: 'dijit/form/Button', /* using the MID */
+	params: {
+		label: 'Rocking it old school!',
+		onClick() {
+			alert('Yes, old school!');
+		}
+	}
 }));
 
 const tab3 = createPanel({

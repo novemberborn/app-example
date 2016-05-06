@@ -1,44 +1,47 @@
 {
-  "name": "dojo-app-example",
-  "version": "2.0.0-pre",
-  "description": "An example of a Dojo 2 Application",
-  "homepage": "http://dojotoolkit.org",
-  "bugs": {
-    "url": "https://github.com/kitsonk/app-example/issues"
-  },
-  "license": "BSD-3-Clause",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kitsonk/app-example.git"
-  },
-  "dependencies": {
-    "@reactivex/rxjs": "5.0.0-beta.6",
-    "dojo-actions": ">=2.0.0-alpha.1",
-    "dojo-compose": ">=2.0.0-beta.2",
-    "dojo-core": ">=2.0.0-alpha.5",
-    "dojo-loader": ">=2.0.0-beta.4",
-    "dojo-widgets": ">=2.0.0-alpha",
-    "immutable": "^3.8.1",
-    "maquette": "^2.3.2"
-  },
-  "devDependencies": {
-    "codecov.io": "0.1.6",
-    "dts-generator": "^1.7.0",
-    "glob": "^7.0.3",
-    "grunt": "0.4.5",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-stylus": "^1.2.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-release": "0.13.0",
-    "grunt-text-replace": "0.4.0",
-    "grunt-ts": "5.3.2",
-    "grunt-tslint": "3.0.3",
-    "intern": "^3.1.1",
-    "istanbul": "^0.4.2",
-    "jsdom": "7.2.2",
-    "remap-istanbul": "0.6.3",
-    "tslint": "^3.6.0",
-    "typescript": "^1.8.9"
-  }
+	"name": "dojo-app-example",
+	"version": "2.0.0-pre",
+	"description": "An example of a Dojo 2 Application",
+	"homepage": "http://dojotoolkit.org",
+	"bugs": {
+		"url": "https://github.com/kitsonk/app-example/issues"
+	},
+	"license": "BSD-3-Clause",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kitsonk/app-example.git"
+	},
+	"dependencies": {
+		"@reactivex/rxjs": "5.0.0-beta.6",
+		"dijit": "^1.11.1",
+		"dojo": "^1.11.1",
+		"dojo-actions": ">=2.0.0-alpha.1",
+		"dojo-compose": ">=2.0.0-beta.2",
+		"dojo-core": ">=2.0.0-alpha.5",
+		"dojo-loader": ">=2.0.0-beta.4",
+		"dojo-typings": "dojo/typings",
+		"dojo-widgets": ">=2.0.0-alpha",
+		"immutable": "^3.8.1",
+		"maquette": "^2.3.2"
+	},
+	"devDependencies": {
+		"codecov.io": "0.1.6",
+		"dts-generator": "^1.7.0",
+		"glob": "^7.0.3",
+		"grunt": "0.4.5",
+		"grunt-contrib-clean": "^1.0.0",
+		"grunt-contrib-copy": "^1.0.0",
+		"grunt-contrib-stylus": "^1.2.0",
+		"grunt-contrib-watch": "^1.0.0",
+		"grunt-release": "0.13.0",
+		"grunt-text-replace": "0.4.0",
+		"grunt-ts": "5.3.2",
+		"grunt-tslint": "3.0.3",
+		"intern": "^3.1.1",
+		"istanbul": "^0.4.2",
+		"jsdom": "7.2.2",
+		"remap-istanbul": "0.6.3",
+		"tslint": "^3.6.0",
+		"typescript": "^1.8.9"
+	}
 }
