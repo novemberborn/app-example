@@ -12,14 +12,14 @@ export const proxyUrl = 'http://localhost:9000/';
 export const capabilities = {
 	'browserstack.debug': false,
 	project: 'Dojo 2',
-	name: 'dojo-<< package-name >>'
+	name: 'app-example'
 };
 
 // Browsers to run integration testing against. Note that version numbers must be strings if used with Sauce
 // OnDemand. Options that will be permutated are browserName, version, platform, and platformVersion; any other
 // capabilities options specified for an environment will be copied as-is
 export const environments = [
-	{ browserName: 'IE', version: [ '9.0', '10.0', '11.0' ], platform: 'Windows' },
+	{ browserName: 'IE', version: [ '10.0', '11.0' ], platform: 'Windows' },
 	{ browserName: 'Edge', platform: 'Windows' },
 	{ browserName: 'Firefox', platform: 'Windows' },
 	{ browserName: 'Chrome', platform: 'Windows' },

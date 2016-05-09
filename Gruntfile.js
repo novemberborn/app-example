@@ -15,6 +15,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-stylus');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-release');
 	grunt.loadNpmTasks('grunt-text-replace');
 	grunt.loadNpmTasks('grunt-ts');
@@ -120,6 +121,10 @@ module.exports = function (grunt) {
 				},
 				src: [ '<%= skipTests %>' ]
 			}
+		},
+
+		exec: {
+			build_dojo1: 'ln -sF node_modules/dojo-util node_modules/util && node_modules/dojo-util/buildScripts/build.sh --profile app-example.profile.js'
 		},
 
 		intern: {
@@ -337,7 +342,8 @@ module.exports = function (grunt) {
 		'copy:staticTestFiles',
 		'copy:staticSrcFiles',
 		'replace:addIstanbulIgnore',
-		'updateTsconfig'
+		'updateTsconfig',
+		'exec:build_dojo1'
 	]);
 	grunt.registerTask('dist', [
 		'tslint',
