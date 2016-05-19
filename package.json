@@ -13,8 +13,6 @@
 	},
 	"dependencies": {
 		"@reactivex/rxjs": "5.0.0-beta.6",
-		"dijit": "^1.11.1",
-		"dojo": "^1.11.1",
 		"dojo-actions": ">=2.0.0-alpha.1",
 		"dojo-compose": ">=2.0.0-beta.3",
 		"dojo-core": ">=2.0.0-alpha.5",
@@ -26,7 +24,6 @@
 	},
 	"devDependencies": {
 		"codecov.io": "0.1.6",
-		"dojo-util": "~1.11.1",
 		"dts-generator": "^1.7.0",
 		"glob": "^7.0.3",
 		"grunt": "0.4.5",

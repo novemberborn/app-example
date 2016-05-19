@@ -123,10 +123,6 @@ module.exports = function (grunt) {
 			}
 		},
 
-		exec: {
-			build_dojo1: 'ln -sF node_modules/dojo-util node_modules/util && node_modules/dojo-util/buildScripts/build.sh --profile app-example.profile.js'
-		},
-
 		intern: {
 			options: {
 				runType: 'runner',
@@ -342,8 +338,7 @@ module.exports = function (grunt) {
 		'copy:staticTestFiles',
 		'copy:staticSrcFiles',
 		'replace:addIstanbulIgnore',
-		'updateTsconfig',
-		'exec:build_dojo1'
+		'updateTsconfig'
 	]);
 	grunt.registerTask('dist', [
 		'tslint',
