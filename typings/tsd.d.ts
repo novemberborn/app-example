@@ -1,5 +1,5 @@
 /// <reference path="../node_modules/immutable/dist/immutable.d.ts" />
-/// <reference path="../node_modules/dojo-actions/typings/dojo-actions/dojo-actions.d.ts" />
+/// <reference path="../node_modules/dojo-actions/dist/typings/dojo-actions/dojo-actions.d.ts" />
 /// <reference path="../node_modules/dojo-core/typings/dojo-core/dojo-core.d.ts" />
 /// <reference path="../node_modules/dojo-core/typings/symbol-shim/symbol-shim.d.ts" />
 /// <reference path="../node_modules/dojo-compose/dist/umd/dojo-compose.d.ts" />
