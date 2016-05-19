@@ -16,7 +16,7 @@
 		"dijit": "^1.11.1",
 		"dojo": "^1.11.1",
 		"dojo-actions": ">=2.0.0-alpha.1",
-		"dojo-compose": ">=2.0.0-beta.2",
+		"dojo-compose": ">=2.0.0-beta.3",
 		"dojo-core": ">=2.0.0-alpha.5",
 		"dojo-loader": ">=2.0.0-beta.4",
 		"dojo-typings": "dojo/typings",
