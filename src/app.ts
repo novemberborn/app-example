@@ -2,7 +2,7 @@
  * An example basic application using stores/widgets/actions
  * @module dojo-app-example/app
  */
-import createMemoryStore from 'dojo-widgets/util/createMemoryStore';
+import createMemoryStore, { MemoryStore } from 'dojo-widgets/util/createMemoryStore';
 import createButton from 'dojo-widgets/createButton';
 import createLayoutContainer from 'dojo-widgets/createLayoutContainer';
 import createList from 'dojo-widgets/createList';
@@ -15,6 +15,9 @@ import projector from 'dojo-widgets/projector';
 import { Child } from 'dojo-widgets/mixins/createParentMixin';
 import createAction from 'dojo-actions/createAction';
 
+import App from 'dojo-app/App';
+
+const app = new App();
 
 /**
  * List items to populate list widget
@@ -30,7 +33,7 @@ const listItems = [
 /**
  * A memory store which handles the widget states
  */
-const widgetStore = createMemoryStore({
+app.registerStore('widgets', createMemoryStore({
 	data: [
 		{ id: 'header', label: 'Dojo 2 Example Application'},
 		{ id: 'tabbed-panel', classes: [ 'pad-1em' ] },
@@ -48,14 +51,14 @@ const widgetStore = createMemoryStore({
 		{ id: 'tab-3-content', label: 'You can try to close me, but...'},
 		{ id: 'can-close', label: 'Can Close' }
 	]
-});
+}));
 
-const actionStore = createMemoryStore({
+app.registerStore('actions', createMemoryStore({
 	data: [
 		{ id: 'close-tab', canClose: false, enabled: true },
 		{ id: 'can-close-tab', enabled: true }
 	]
-});
+}));
 
 const widgets: Child[] = [];
 
@@ -64,7 +67,7 @@ const widgets: Child[] = [];
  */
 const header = createWidget({
 	id: 'header',
-	stateFrom: widgetStore,
+	stateFrom: app.getStore('widgets'),
 	tagName: 'h1'
 });
 
@@ -72,21 +75,21 @@ widgets.push(header);
 
 const tabbedPanel = createTabbedPanel({
 	id: 'tabbed-panel',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 widgets.push(tabbedPanel);
 
 const tab1 = createPanel({
 	id: 'tab-1',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 tabbedPanel.append(tab1);
 
 const layoutContainer = createLayoutContainer({
 	id: 'layout-container',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 tab1.append(layoutContainer);
@@ -95,14 +98,14 @@ projector.append(widgets);
 
 const panelFixed = createPanel({
 	id: 'panel-fixed',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 layoutContainer.append(panelFixed);
 
 const panelResize = createResizePanel({
 	id: 'panel-resize',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 panelFixed.append(panelResize);
@@ -112,7 +115,7 @@ panelFixed.append(panelResize);
  */
 const removeButton = createButton({
 	id: 'remove',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 panelResize.append(removeButton);
@@ -122,7 +125,7 @@ panelResize.append(removeButton);
  */
 const firstName = createTextInput({
 	id: 'first-name',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 panelResize.append(firstName);
@@ -132,7 +135,7 @@ panelResize.append(firstName);
  */
 const addButton = createButton({
 	id: 'add',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 panelResize.append(addButton);
@@ -142,40 +145,40 @@ panelResize.append(addButton);
  */
 const list = createList({
 	id: 'list',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 panelFixed.append(list);
 
 const tab2 = createPanel({
 	id: 'tab-2',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 tabbedPanel.append(tab2);
 
 tab2.append(createWidget({
 	id: 'tab-2-content',
-	stateFrom: widgetStore,
+	stateFrom: app.getStore('widgets'),
 	tagName: 'div'
 }));
 
 const tab3 = createPanel({
 	id: 'tab-3',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 tabbedPanel.append(tab3);
 
 tab3.append(createWidget({
 	id: 'tab-3-content',
-	stateFrom: widgetStore,
+	stateFrom: app.getStore('widgets'),
 	tagName: 'div'
 }));
 
 const canCloseButton = createButton({
 	id: 'can-close',
-	stateFrom: widgetStore
+	stateFrom: app.getStore('widgets')
 });
 
 tab3.append(canCloseButton);
@@ -183,58 +186,55 @@ tab3.append(canCloseButton);
 /**
  * An action that will pop an item from the list item and patch the items into the widgetstore
  */
-const actionPopList = createAction({
-	type: 'pop-list',
+app.registerAction('pop-list', createAction({
 	do() {
 		listItems.pop();
-		return widgetStore.patch({ id: 'list', items: listItems });
+		return app.getStore('widgets').patch({ id: 'list', items: listItems });
 	}
-});
+}));
 
 /**
  * Connect the buttons onclick to the action
  */
-removeButton.on('click', actionPopList);
+removeButton.on('click', app.getAction('pop-list'));
 
 /**
  * An action that will take the value from the text input, push it onto the list and patch
  * the widget store
  */
-const actionPushList = createAction({
-	type: 'push-list',
+app.registerAction('push-list', createAction({
 	do() {
 		const label = firstName.value;
 		listItems.push({ id: listItems.length, label: label });
-		return widgetStore.patch({ id: 'list', items: listItems }) /* patch the list */
+		const widgets = <MemoryStore<Object>> app.getStore('widgets');
+		return widgets.patch({ id: 'list', items: listItems }) /* patch the list */
 			.patch({ id: 'first-name', value: label }); /* patch the value of fisrt-name */
 	}
-});
+}));
 
 /**
  * Connect the buttons onclick to the action
  */
-addButton.on('click', actionPushList);
+addButton.on('click', app.getAction('push-list'));
 
-const actionCloseTab3 = createAction({
-	type: 'close-tab',
+app.registerAction('close-tab', createAction({
 	do(options) {
 		if (options && options.event && !this.state.canClose) {
 			(<any> options.event).preventDefault();
-			return widgetStore.patch({ label: 'I said you can\'t close me' }, { id: 'tab-3-content' });
+			return app.getStore('widgets').patch({ label: 'I said you can\'t close me' }, { id: 'tab-3-content' });
 		}
 	}
-});
-actionCloseTab3.observeState('close-tab', actionStore);
-tab3.on('close', actionCloseTab3);
+}));
+app.getAction('close-tab').observeState('close-tab', app.getStore('actions'));
+tab3.on('close', app.getAction('close-tab'));
 
-const actionCanCloseTab3 = createAction({
-	type: 'can-close-tab',
+app.registerAction('can-close-tab', createAction({
 	do() {
-		return actionStore.patch({ canClose: true }, { id: 'close-tab' })
-			.then(() => widgetStore.patch({ label: 'Now you can close the tab!!!' }, { id: 'tab-3-content'}));
+		return app.getStore('actions').patch({ canClose: true }, { id: 'close-tab' })
+			.then(() => app.getStore('widgets').patch({ label: 'Now you can close the tab!!!' }, { id: 'tab-3-content'}));
 	}
-});
-canCloseButton.on('click', actionCanCloseTab3);
+}));
+canCloseButton.on('click', app.getAction('can-close-tab'));
 
 /**
  * Attach the VDOM
