@@ -2,7 +2,7 @@
 	baseUrl: '../..',
 	packages: [
 		{ name: 'src', location: '_build/src' },
-		{ name: 'dojo-actions', location: 'node_modules/dojo-actions' },
+		{ name: 'dojo-actions', location: 'node_modules/dojo-actions/dist' },
 		{ name: 'dojo-compose', location: 'node_modules/dojo-compose/dist/umd' },
 		{ name: 'dojo-core', location: 'node_modules/dojo-core' },
 		{ name: 'dojo-widgets', location: 'node_modules/dojo-widgets' },
