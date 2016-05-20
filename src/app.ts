@@ -2,6 +2,7 @@
  * An example basic application using stores/widgets/actions
  * @module dojo-app-example/app
  */
+import Promise from 'dojo-core/Promise';
 import createMemoryStore from 'dojo-widgets/util/createMemoryStore';
 import createButton from 'dojo-widgets/createButton';
 import createLayoutContainer from 'dojo-widgets/createLayoutContainer';
@@ -163,7 +164,7 @@ app.registerWidget('can-close', createButton({
 	stateFrom: widgets
 }));
 
-Promise.all<any>([
+Promise.all([
 	'header',
 	'tabbed-panel',
 	'tab-1',
