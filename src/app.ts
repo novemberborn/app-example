@@ -61,13 +61,20 @@ const widgets = createMemoryStore({
 });
 app.registerStore('widgets', widgets);
 
-const actions = createMemoryStore({
-	data: [
-		{ id: 'close-tab', canClose: false, enabled: true },
-		{ id: 'can-close-tab', enabled: true }
+app.loadDefinition({
+	stores: [
+		{
+			factory: 'dojo-widgets/util/createMemoryStore',
+			id: 'actions',
+			options: {
+				data: [
+					{ id: 'close-tab', canClose: false, enabled: true },
+					{ id: 'can-close-tab', enabled: true }
+				]
+			}
+		}
 	]
 });
-app.registerStore('actions', actions);
 
 /**
  * A header widget
@@ -174,22 +181,26 @@ app.loadDefinition({
 });
 
 Promise.all([
-	'header',
-	'tabbed-panel',
-	'tab-1',
-	'layout-container',
-	'panel-fixed',
-	'panel-resize',
-	'remove',
-	'first-name',
-	'add',
-	'list',
-	'tab-2',
-	'tab-2-content',
-	'tab-3',
-	'tab-3-content',
-	'can-close'
-].map(id => app.getWidget(id))).then(([
+	app.getStore('actions'),
+	...[
+		'header',
+		'tabbed-panel',
+		'tab-1',
+		'layout-container',
+		'panel-fixed',
+		'panel-resize',
+		'remove',
+		'first-name',
+		'add',
+		'list',
+		'tab-2',
+		'tab-2-content',
+		'tab-3',
+		'tab-3-content',
+		'can-close'
+	].map(id => app.getWidget(id))
+]).then(([
+	actions,
 	header,
 	tabbedPanel,
 	tab1,
