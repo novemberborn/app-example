@@ -10,15 +10,18 @@ import createPanel from 'dojo-widgets/createPanel';
 import { RenderableMixin } from 'dojo-widgets/mixins/createRenderable';
 import createResizePanel from 'dojo-widgets/createResizePanel';
 import createTabbedPanel from 'dojo-widgets/createTabbedPanel';
-import createTextInput, { TextInput } from 'dojo-widgets/createTextInput';
+import createTextInput from 'dojo-widgets/createTextInput';
 import createWidget from 'dojo-widgets/createWidget';
 import projector from 'dojo-widgets/projector';
 import { ParentMixin, Child } from 'dojo-widgets/mixins/createParentMixin';
-import createAction from 'dojo-actions/createAction';
 import { Destroyable } from 'dojo-compose/mixins/createDestroyable';
 import { Evented } from 'dojo-compose/mixins/createEvented';
 
-import App, { ActionAndStoreRegistry } from 'dojo-app/App';
+import App from 'dojo-app/App';
+
+import closeTab from './actions/closeTab';
+import canCloseTab from './actions/canCloseTab';
+import { popList, pushList } from './actions/list';
 
 type Appendable = ParentMixin<Child>;
 type Projectable = Destroyable & RenderableMixin;
@@ -176,26 +179,7 @@ app.registerWidget('can-close', createButton({
 /**
  * An action that will pop an item from the list item and patch the items into the widgetstore
  */
-interface WidgetsAction {
-	widgets?: MemoryStore<Object>;
-
-	register(registry: ActionAndStoreRegistry): void;
-}
-
-const createWidgetsAction = createAction.extend<WidgetsAction>({
-	register(registry: ActionAndStoreRegistry) {
-		(<WidgetsAction> this).widgets = <MemoryStore<Object>> registry.getStore('widgets');
-	}
-});
-
-app.registerAction('pop-list', createWidgetsAction({
-	do() {
-		listItems.pop();
-		return (<WidgetsAction> this).widgets.patch(
-			{ id: 'list', items: listItems }
-		);
-	}
-}));
+app.registerAction('pop-list', popList);
 
 /**
  * Connect the buttons onclick to the action
@@ -206,57 +190,19 @@ app.registerAction('pop-list', createWidgetsAction({
  * An action that will take the value from the text input, push it onto the list and patch
  * the widget store
  */
-app.registerAction('push-list', createWidgetsAction({
-	do() {
-		const label = (<TextInput> app.getWidget('first-name')).value;
-		return (<WidgetsAction> this).widgets
-			.patch({ id: 'list', items: listItems }) /* patch the list */
-			.patch({ id: 'first-name', value: label }); /* patch the value of fisrt-name */
-	}
-}));
+app.registerAction('push-list', pushList);
 
 /**
  * Connect the buttons onclick to the action
  */
 (<Evented> app.getWidget('add')).on('click', app.getAction('push-list'));
 
-app.registerAction('close-tab', createWidgetsAction({
-	do({ event }: { event?: any } = {}) {
-		if (!event || this.state.canClose) {
-			return;
-		}
-
-		event.preventDefault();
-		return (<WidgetsAction> this).widgets.patch(
-			{ label: 'I said you can\'t close me' },
-			{ id: 'tab-3-content' }
-		);
-	}
-}));
+app.registerAction('close-tab', closeTab);
 app.getAction('close-tab').observeState('close-tab', app.getStore('actions'));
-(<Evented> app.getWidget('tab-3')).on('close', app.getAction('close-tab'));
+(<Evented> app.getWidget('tab-3')).on('close', closeTab);
 
-interface ActionsAndWidgetsAction extends WidgetsAction {
-	actions?: MemoryStore<Object>;
-}
-
-const createActionsAndWidgetsAction = createAction.extend<ActionsAndWidgetsAction>({
-	register(registry: ActionAndStoreRegistry) {
-		this.actions = registry.getStore('actions');
-		this.widgets = registry.getStore('widgets');
-	}
-});
-
-app.registerAction('can-close-tab', createActionsAndWidgetsAction({
-	do() {
-		const { actions, widgets } = <ActionsAndWidgetsAction> this;
-		return actions.patch({ canClose: true }, { id: 'close-tab' })
-			.then(() => {
-				return widgets.patch({ label: 'Now you can close the tab!!!' }, { id: 'tab-3-content'});
-			});
-	}
-}));
-(<Evented> app.getWidget('can-close')).on('click', app.getAction('can-close-tab'));
+app.registerAction('can-close-tab', canCloseTab);
+(<Evented> app.getWidget('can-close')).on('click', canCloseTab);
 
 /**
  * Attach the VDOM

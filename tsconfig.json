@@ -16,6 +16,9 @@
 	],
 	"files": [
 		"./typings/tsd.d.ts",
+		"./src/actions/canCloseTab.ts",
+		"./src/actions/closeTab.ts",
+		"./src/actions/list.ts",
 		"./src/app.ts",
 		"./src/index.ts",
 		"./tests/functional/all.ts",
