@@ -5,7 +5,6 @@
 import Promise from 'dojo-core/Promise';
 import createMemoryStore from 'dojo-widgets/util/createMemoryStore';
 import createButton from 'dojo-widgets/createButton';
-import createLayoutContainer from 'dojo-widgets/createLayoutContainer';
 import createList from 'dojo-widgets/createList';
 import createPanel from 'dojo-widgets/createPanel';
 import { RenderableMixin } from 'dojo-widgets/mixins/createRenderable';
@@ -87,84 +86,93 @@ app.registerWidget('tabbed-panel', createTabbedPanel({
 	stateFrom: widgets
 }));
 
-app.registerWidget('tab-1', createPanel({
-	id: 'tab-1',
-	stateFrom: widgets
-}));
-
-app.registerWidget('layout-container', createLayoutContainer({
-	id: 'layout-container',
-	stateFrom: widgets
-}));
-
-app.registerWidget('panel-fixed', createPanel({
-	id: 'panel-fixed',
-	stateFrom: widgets
-}));
-
-app.registerWidget('panel-resize', createResizePanel({
-	id: 'panel-resize',
-	stateFrom: widgets
-}));
-
-/**
- * Button will remove item from list
- */
-app.registerWidget('remove', createButton({
-	id: 'remove',
-	stateFrom: widgets
-}));
-
-/**
- * A widget for collecting the value of the list
- */
-app.registerWidget('first-name', createTextInput({
-	id: 'first-name',
-	stateFrom: widgets
-}));
-
-/**
- * A widget that will add the value to the list
- */
-app.registerWidget('add', createButton({
-	id: 'add',
-	stateFrom: widgets
-}));
-
-/**
- * The list widget
- */
-app.registerWidget('list', createList({
-	id: 'list',
-	stateFrom: widgets
-}));
-
-app.registerWidget('tab-2', createPanel({
-	id: 'tab-2',
-	stateFrom: widgets
-}));
-
-app.registerWidget('tab-2-content', createWidget({
-	id: 'tab-2-content',
-	stateFrom: widgets,
-	tagName: 'div'
-}));
-
-app.registerWidget('tab-3', createPanel({
-	id: 'tab-3',
-	stateFrom: widgets
-}));
-
-app.registerWidget('tab-3-content', createWidget({
-	id: 'tab-3-content',
-	stateFrom: widgets,
-	tagName: 'div'
-}));
-
-app.registerWidget('can-close', createButton({
-	id: 'can-close',
-	stateFrom: widgets
-}));
+app.loadDefinition({
+	widgets: [
+		{
+			id: 'tab-1',
+			factory: createPanel,
+			stateFrom: 'widgets'
+		},
+		{
+			id: 'layout-container',
+			factory: 'dojo-widgets/createLayoutContainer',
+			stateFrom: 'widgets'
+		},
+		{
+			id: 'panel-fixed',
+			factory: createPanel,
+			stateFrom: 'widgets'
+		},
+		{
+			id: 'panel-resize',
+			factory: createResizePanel,
+			stateFrom: 'widgets'
+		},
+		/**
+		 * Button will remove item from list
+		 */
+		{
+			id: 'remove',
+			factory: createButton,
+			stateFrom: 'widgets'
+		},
+		/**
+		 * A widget for collecting the value of the list
+		 */
+		{
+			id: 'first-name',
+			factory: createTextInput,
+			stateFrom: 'widgets'
+		},
+		/**
+		 * A widget that will add the value to the list
+		 */
+		{
+			id: 'add',
+			factory: createButton,
+			stateFrom: 'widgets'
+		},
+		/**
+		 * The list widget
+		 */
+		{
+			id: 'list',
+			factory: createList,
+			stateFrom: 'widgets'
+		},
+		{
+			id: 'tab-2',
+			factory: createPanel,
+			stateFrom: 'widgets'
+		},
+		{
+			id: 'tab-2-content',
+			factory: createWidget,
+			stateFrom: 'widgets',
+			options: {
+				tagName: 'div'
+			}
+		},
+		{
+			id: 'tab-3',
+			factory: createPanel,
+			stateFrom: 'widgets'
+		},
+		{
+			id: 'tab-3-content',
+			factory: createWidget,
+			stateFrom: 'widgets',
+			options: {
+				tagName: 'div'
+			}
+		},
+		{
+			id: 'can-close',
+			factory: createButton,
+			stateFrom: 'widgets'
+		}
+	]
+});
 
 Promise.all([
 	'header',
