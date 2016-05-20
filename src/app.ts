@@ -198,7 +198,7 @@ app.registerAction('push-list', pushList);
 (<Evented> app.getWidget('add')).on('click', pushList);
 
 app.registerAction('close-tab', closeTab);
-app.getAction('close-tab').observeState('close-tab', app.getStore('actions'));
+closeTab.observeState('close-tab', app.getStore('actions'));
 (<Evented> app.getWidget('tab-3')).on('close', closeTab);
 
 app.registerAction('can-close-tab', canCloseTab);
