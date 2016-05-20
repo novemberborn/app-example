@@ -1,10 +1,11 @@
 import createAction from 'dojo-actions/createAction';
 import { CombinedRegistry } from 'dojo-app/App';
+import Promise from 'dojo-core/Promise';
 import { MemoryStore } from 'dojo-widgets/util/createMemoryStore';
 
 interface WithStores {
-	actions?: MemoryStore<Object>;
-	widgets?: MemoryStore<Object>;
+	actions?: Promise<MemoryStore<Object>>;
+	widgets?: Promise<MemoryStore<Object>>;
 }
 
 export default createAction.extend<WithStores>({})({
@@ -16,9 +17,11 @@ export default createAction.extend<WithStores>({})({
 
 	do() {
 		const { actions, widgets } = <WithStores> this;
-		return actions.patch({ canClose: true }, { id: 'close-tab' })
-			.then(() => {
-				return widgets.patch({ label: 'Now you can close the tab!!!' }, { id: 'tab-3-content'});
-			});
+		return Promise.all([actions, widgets]).then(([actions, widgets]) => {
+			return actions.patch({ canClose: true }, { id: 'close-tab' })
+				.then(() => {
+					return widgets.patch({ label: 'Now you can close the tab!!!' }, { id: 'tab-3-content'});
+				});
+		});
 	}
 });

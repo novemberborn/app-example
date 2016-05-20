@@ -1,5 +1,6 @@
 import createAction from 'dojo-actions/createAction';
 import { CombinedRegistry, Identity } from 'dojo-app/App';
+import Promise from 'dojo-core/Promise';
 import { TextInput } from 'dojo-widgets/createTextInput';
 import { MemoryStore } from 'dojo-widgets/util/createMemoryStore';
 
@@ -14,7 +15,7 @@ interface ListState {
 }
 
 interface WithStore {
-	store?: MemoryStore<ListState>;
+	store?: Promise<MemoryStore<ListState>>;
 }
 
 interface PushList extends WithStore {
@@ -33,11 +34,13 @@ export const pushList = createAction.extend<PushList>({})({
 		const { getWidget, store } = <PushList> this;
 		const { value: label } = getWidget('first-name');
 
-		return store.get('list').then(({ items }) => {
-			items.push({ id: items.length, label });
-			return store
-				.patch({ id: 'list', items }) /* patch the list */
-				.patch({ id: 'first-name', value: label }); /* patch the value of fisrt-name */
+		return store.then(store => {
+			return store.get('list').then(({ items }) => {
+				items.push({ id: items.length, label });
+				return store
+					.patch({ id: 'list', items }) /* patch the list */
+					.patch({ id: 'first-name', value: label }); /* patch the value of fisrt-name */
+			});
 		});
 	}
 });
@@ -50,9 +53,11 @@ export const popList = createAction.extend<WithStore>({})({
 
 	do() {
 		const { store } = <WithStore> this;
-		return store.get('list').then(({ items }) => {
-			items.pop();
-			return store.patch({ id: 'list', items });
+		return store.then(store => {
+			return store.get('list').then(({ items }) => {
+				items.pop();
+				return store.patch({ id: 'list', items });
+			});
 		});
 	}
 });

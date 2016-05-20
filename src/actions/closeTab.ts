@@ -1,9 +1,10 @@
 import createAction from 'dojo-actions/createAction';
 import { CombinedRegistry } from 'dojo-app/App';
+import Promise from 'dojo-core/Promise';
 import { MemoryStore } from 'dojo-widgets/util/createMemoryStore';
 
 interface WithStore {
-	store?: MemoryStore<Object>;
+	store?: Promise<MemoryStore<Object>>;
 }
 
 export default createAction.extend<WithStore>({})({
@@ -19,9 +20,11 @@ export default createAction.extend<WithStore>({})({
 
 		event.preventDefault();
 		const { store } = <WithStore> this;
-		return store.patch(
-			{ label: 'I said you can\'t close me' },
-			{ id: 'tab-3-content' }
-		);
+		return store.then(store => {
+			return store.patch(
+				{ label: 'I said you can\'t close me' },
+				{ id: 'tab-3-content' }
+			);
+		});
 	}
 });
