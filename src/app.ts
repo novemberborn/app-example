@@ -184,7 +184,7 @@ app.registerAction('pop-list', popList);
 /**
  * Connect the buttons onclick to the action
  */
-(<Evented> app.getWidget('remove')).on('click', app.getAction('pop-list'));
+(<Evented> app.getWidget('remove')).on('click', popList);
 
 /**
  * An action that will take the value from the text input, push it onto the list and patch
@@ -195,7 +195,7 @@ app.registerAction('push-list', pushList);
 /**
  * Connect the buttons onclick to the action
  */
-(<Evented> app.getWidget('add')).on('click', app.getAction('push-list'));
+(<Evented> app.getWidget('add')).on('click', pushList);
 
 app.registerAction('close-tab', closeTab);
 app.getAction('close-tab').observeState('close-tab', app.getStore('actions'));
