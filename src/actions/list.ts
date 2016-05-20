@@ -19,8 +19,8 @@ interface WithStore {
 }
 
 interface PushList extends WithStore {
-	getWidget?(id: 'first-name'): TextInput;
-	getWidget?(id: Identity): any;
+	getWidget?(id: 'first-name'): Promise<TextInput>;
+	getWidget?(id: Identity): Promise<any>;
 }
 
 export const pushList = createAction.extend<PushList>({})({
@@ -32,14 +32,15 @@ export const pushList = createAction.extend<PushList>({})({
 
 	do() {
 		const { getWidget, store } = <PushList> this;
-		const { value: label } = getWidget('first-name');
 
-		return store.then(store => {
-			return store.get('list').then(({ items }) => {
-				items.push({ id: items.length, label });
-				return store
-					.patch({ id: 'list', items }) /* patch the list */
-					.patch({ id: 'first-name', value: label }); /* patch the value of fisrt-name */
+		return getWidget('first-name').then(({ value: label }) => {
+			return store.then(store => {
+				return store.get('list').then(({ items }) => {
+					items.push({ id: items.length, label });
+					return store
+						.patch({ id: 'list', items }) /* patch the list */
+						.patch({ id: 'first-name', value: label }); /* patch the value of fisrt-name */
+				});
 			});
 		});
 	}
