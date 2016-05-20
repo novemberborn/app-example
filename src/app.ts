@@ -28,17 +28,6 @@ type Projectable = Destroyable & RenderableMixin;
 const app = new App();
 
 /**
- * List items to populate list widget
- */
-const listItems = [
-	{ id: 1, label: 'foo' },
-	{ id: 2, label: 'bar' },
-	{ id: 3, label: 'baz' },
-	{ id: 4, label: 'qux' },
-	{ id: 5, label: 'norf' }
-];
-
-/**
  * A memory store which handles the widget states
  */
 const widgets = createMemoryStore({
@@ -52,7 +41,17 @@ const widgets = createMemoryStore({
 		{ id: 'remove', label: 'Remove', name: 'remove' },
 		{ id: 'first-name', name: 'first-name', value: 'qat' },
 		{ id: 'add', label: 'Add', name: 'add' },
-		{ id: 'list', classes: [ 'margin-1em' ], items: listItems },
+		{
+			id: 'list',
+			classes: [ 'margin-1em' ],
+			items: [
+				{ id: 1, label: 'foo' },
+				{ id: 2, label: 'bar' },
+				{ id: 3, label: 'baz' },
+				{ id: 4, label: 'qux' },
+				{ id: 5, label: 'norf' }
+			]
+		},
 		{ id: 'tab-2', classes: [ 'pad-1em' ], label: 'Tab 2', closeable: true },
 		{ id: 'tab-2-content', label: 'You can close me!' },
 		{ id: 'tab-3', classes: [ 'pad-1em' ], label: 'Tab 3', closeable: true },
