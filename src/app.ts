@@ -71,33 +71,33 @@ app.registerStore('actions', createMemoryStore({
  */
 app.registerWidget('header', createWidget({
 	id: 'header',
-	stateFrom: app.getStore('widgets'),
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets'),
 	tagName: 'h1'
 }));
 
 app.registerWidget('tabbed-panel', createTabbedPanel({
 	id: 'tabbed-panel',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 app.registerWidget('tab-1', createPanel({
 	id: 'tab-1',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 app.registerWidget('layout-container', createLayoutContainer({
 	id: 'layout-container',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 app.registerWidget('panel-fixed', createPanel({
 	id: 'panel-fixed',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 app.registerWidget('panel-resize', createResizePanel({
 	id: 'panel-resize',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 /**
@@ -105,7 +105,7 @@ app.registerWidget('panel-resize', createResizePanel({
  */
 app.registerWidget('remove', createButton({
 	id: 'remove',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 /**
@@ -113,7 +113,7 @@ app.registerWidget('remove', createButton({
  */
 app.registerWidget('first-name', createTextInput({
 	id: 'first-name',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 /**
@@ -121,7 +121,7 @@ app.registerWidget('first-name', createTextInput({
  */
 app.registerWidget('add', createButton({
 	id: 'add',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 /**
@@ -129,34 +129,34 @@ app.registerWidget('add', createButton({
  */
 app.registerWidget('list', createList({
 	id: 'list',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 app.registerWidget('tab-2', createPanel({
 	id: 'tab-2',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 app.registerWidget('tab-2-content', createWidget({
 	id: 'tab-2-content',
-	stateFrom: app.getStore('widgets'),
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets'),
 	tagName: 'div'
 }));
 
 app.registerWidget('tab-3', createPanel({
 	id: 'tab-3',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 app.registerWidget('tab-3-content', createWidget({
 	id: 'tab-3-content',
-	stateFrom: app.getStore('widgets'),
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets'),
 	tagName: 'div'
 }));
 
 app.registerWidget('can-close', createButton({
 	id: 'can-close',
-	stateFrom: app.getStore('widgets')
+	stateFrom: <MemoryStore<Object>> app.getStore('widgets')
 }));
 
 (<Appendable> app.getWidget('tabbed-panel')).append(<Child> app.getWidget('tab-1'));
