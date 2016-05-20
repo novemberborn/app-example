@@ -7,15 +7,21 @@ import createButton from 'dojo-widgets/createButton';
 import createLayoutContainer from 'dojo-widgets/createLayoutContainer';
 import createList from 'dojo-widgets/createList';
 import createPanel from 'dojo-widgets/createPanel';
+import { RenderableMixin } from 'dojo-widgets/mixins/createRenderable';
 import createResizePanel from 'dojo-widgets/createResizePanel';
 import createTabbedPanel from 'dojo-widgets/createTabbedPanel';
-import createTextInput from 'dojo-widgets/createTextInput';
+import createTextInput, { TextInput } from 'dojo-widgets/createTextInput';
 import createWidget from 'dojo-widgets/createWidget';
 import projector from 'dojo-widgets/projector';
-import { Child } from 'dojo-widgets/mixins/createParentMixin';
+import { ParentMixin, Child } from 'dojo-widgets/mixins/createParentMixin';
 import createAction from 'dojo-actions/createAction';
+import { Destroyable } from 'dojo-compose/mixins/createDestroyable';
+import { Evented } from 'dojo-compose/mixins/createEvented';
 
 import App from 'dojo-app/App';
+
+type Appendable = ParentMixin<Child>;
+type Projectable = Destroyable & RenderableMixin;
 
 const app = new App();
 
@@ -60,128 +66,112 @@ app.registerStore('actions', createMemoryStore({
 	]
 }));
 
-const widgets: Child[] = [];
-
 /**
  * A header widget
  */
-const header = createWidget({
+app.registerWidget('header', createWidget({
 	id: 'header',
 	stateFrom: app.getStore('widgets'),
 	tagName: 'h1'
-});
+}));
 
-widgets.push(header);
-
-const tabbedPanel = createTabbedPanel({
+app.registerWidget('tabbed-panel', createTabbedPanel({
 	id: 'tabbed-panel',
 	stateFrom: app.getStore('widgets')
-});
+}));
 
-widgets.push(tabbedPanel);
-
-const tab1 = createPanel({
+app.registerWidget('tab-1', createPanel({
 	id: 'tab-1',
 	stateFrom: app.getStore('widgets')
-});
+}));
 
-tabbedPanel.append(tab1);
-
-const layoutContainer = createLayoutContainer({
+app.registerWidget('layout-container', createLayoutContainer({
 	id: 'layout-container',
 	stateFrom: app.getStore('widgets')
-});
+}));
 
-tab1.append(layoutContainer);
-
-projector.append(widgets);
-
-const panelFixed = createPanel({
+app.registerWidget('panel-fixed', createPanel({
 	id: 'panel-fixed',
 	stateFrom: app.getStore('widgets')
-});
+}));
 
-layoutContainer.append(panelFixed);
-
-const panelResize = createResizePanel({
+app.registerWidget('panel-resize', createResizePanel({
 	id: 'panel-resize',
 	stateFrom: app.getStore('widgets')
-});
-
-panelFixed.append(panelResize);
+}));
 
 /**
  * Button will remove item from list
  */
-const removeButton = createButton({
+app.registerWidget('remove', createButton({
 	id: 'remove',
 	stateFrom: app.getStore('widgets')
-});
-
-panelResize.append(removeButton);
+}));
 
 /**
  * A widget for collecting the value of the list
  */
-const firstName = createTextInput({
+app.registerWidget('first-name', createTextInput({
 	id: 'first-name',
 	stateFrom: app.getStore('widgets')
-});
-
-panelResize.append(firstName);
+}));
 
 /**
  * A widget that will add the value to the list
  */
-const addButton = createButton({
+app.registerWidget('add', createButton({
 	id: 'add',
 	stateFrom: app.getStore('widgets')
-});
-
-panelResize.append(addButton);
+}));
 
 /**
  * The list widget
  */
-const list = createList({
+app.registerWidget('list', createList({
 	id: 'list',
 	stateFrom: app.getStore('widgets')
-});
+}));
 
-panelFixed.append(list);
-
-const tab2 = createPanel({
+app.registerWidget('tab-2', createPanel({
 	id: 'tab-2',
 	stateFrom: app.getStore('widgets')
-});
+}));
 
-tabbedPanel.append(tab2);
-
-tab2.append(createWidget({
+app.registerWidget('tab-2-content', createWidget({
 	id: 'tab-2-content',
 	stateFrom: app.getStore('widgets'),
 	tagName: 'div'
 }));
 
-const tab3 = createPanel({
+app.registerWidget('tab-3', createPanel({
 	id: 'tab-3',
 	stateFrom: app.getStore('widgets')
-});
+}));
 
-tabbedPanel.append(tab3);
-
-tab3.append(createWidget({
+app.registerWidget('tab-3-content', createWidget({
 	id: 'tab-3-content',
 	stateFrom: app.getStore('widgets'),
 	tagName: 'div'
 }));
 
-const canCloseButton = createButton({
+app.registerWidget('can-close', createButton({
 	id: 'can-close',
 	stateFrom: app.getStore('widgets')
-});
+}));
 
-tab3.append(canCloseButton);
+(<Appendable> app.getWidget('tabbed-panel')).append(<Child> app.getWidget('tab-1'));
+(<Appendable> app.getWidget('tab-1')).append(<Child> app.getWidget('layout-container'));
+(<Appendable> app.getWidget('layout-container')).append(<Child> app.getWidget('panel-fixed'));
+(<Appendable> app.getWidget('panel-fixed')).append(<Child> app.getWidget('panel-resize'));
+(<Appendable> app.getWidget('panel-resize')).append(<Child> app.getWidget('remove'));
+(<Appendable> app.getWidget('panel-resize')).append(<Child> app.getWidget('first-name'));
+(<Appendable> app.getWidget('panel-resize')).append(<Child> app.getWidget('add'));
+(<Appendable> app.getWidget('panel-fixed')).append(<Child> app.getWidget('list'));
+(<Appendable> app.getWidget('tabbed-panel')).append(<Child> app.getWidget('tab-2'));
+(<Appendable> app.getWidget('tab-2')).append(<Child> app.getWidget('tab-2-content'));
+(<Appendable> app.getWidget('tabbed-panel')).append(<Child> app.getWidget('tab-3'));
+(<Appendable> app.getWidget('tab-3')).append(<Child> app.getWidget('tab-3-content'));
+(<Appendable> app.getWidget('tab-3')).append(<Child> app.getWidget('can-close'));
 
 /**
  * An action that will pop an item from the list item and patch the items into the widgetstore
@@ -196,7 +186,7 @@ app.registerAction('pop-list', createAction({
 /**
  * Connect the buttons onclick to the action
  */
-removeButton.on('click', app.getAction('pop-list'));
+(<Evented> app.getWidget('remove')).on('click', app.getAction('pop-list'));
 
 /**
  * An action that will take the value from the text input, push it onto the list and patch
@@ -204,7 +194,7 @@ removeButton.on('click', app.getAction('pop-list'));
  */
 app.registerAction('push-list', createAction({
 	do() {
-		const label = firstName.value;
+		const label = (<TextInput> app.getWidget('first-name')).value;
 		listItems.push({ id: listItems.length, label: label });
 		const widgets = <MemoryStore<Object>> app.getStore('widgets');
 		return widgets.patch({ id: 'list', items: listItems }) /* patch the list */
@@ -215,7 +205,7 @@ app.registerAction('push-list', createAction({
 /**
  * Connect the buttons onclick to the action
  */
-addButton.on('click', app.getAction('push-list'));
+(<Evented> app.getWidget('add')).on('click', app.getAction('push-list'));
 
 app.registerAction('close-tab', createAction({
 	do(options) {
@@ -226,7 +216,7 @@ app.registerAction('close-tab', createAction({
 	}
 }));
 app.getAction('close-tab').observeState('close-tab', app.getStore('actions'));
-tab3.on('close', app.getAction('close-tab'));
+(<Evented> app.getWidget('tab-3')).on('close', app.getAction('close-tab'));
 
 app.registerAction('can-close-tab', createAction({
 	do() {
@@ -234,9 +224,13 @@ app.registerAction('can-close-tab', createAction({
 			.then(() => app.getStore('widgets').patch({ label: 'Now you can close the tab!!!' }, { id: 'tab-3-content'}));
 	}
 }));
-canCloseButton.on('click', app.getAction('can-close-tab'));
+(<Evented> app.getWidget('can-close')).on('click', app.getAction('can-close-tab'));
 
 /**
  * Attach the VDOM
  */
+projector.append([
+	<Projectable> app.getWidget('header'),
+	<Projectable> app.getWidget('tabbed-panel')
+]);
 projector.attach();
