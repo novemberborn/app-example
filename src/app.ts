@@ -74,11 +74,13 @@ app.registerStore('actions', actions);
 /**
  * A header widget
  */
-app.registerWidget('header', createWidget({
-	id: 'header',
-	stateFrom: widgets,
-	tagName: 'h1'
-}));
+app.registerWidgetFactory('header', () => {
+	return Promise.resolve(createWidget({
+		id: 'header',
+		stateFrom: widgets,
+		tagName: 'h1'
+	}));
+});
 
 app.registerWidget('tabbed-panel', createTabbedPanel({
 	id: 'tabbed-panel',
