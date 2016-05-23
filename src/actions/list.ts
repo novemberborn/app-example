@@ -1,5 +1,5 @@
 import createAction from 'dojo-actions/createAction';
-import { CombinedRegistry, Identity } from 'dojo-app/App';
+import { CombinedRegistry, Identifier } from 'dojo-app/App';
 import Promise from 'dojo-core/Promise';
 import { TextInput } from 'dojo-widgets/createTextInput';
 import { MemoryStore } from 'dojo-widgets/util/createMemoryStore';
@@ -20,7 +20,7 @@ interface WithStore {
 
 interface PushList extends WithStore {
 	getWidget?(id: 'first-name'): Promise<TextInput>;
-	getWidget?(id: Identity): Promise<any>;
+	getWidget?(id: Identifier): Promise<any>;
 }
 
 export const pushList = createAction.extend<PushList>({})({

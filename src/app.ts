@@ -15,8 +15,9 @@ import createWidget from 'dojo-widgets/createWidget';
 import projector from 'dojo-widgets/projector';
 import { ParentMixin, Child } from 'dojo-widgets/mixins/createParentMixin';
 import { Destroyable } from 'dojo-compose/mixins/createDestroyable';
+import { Evented } from 'dojo-compose/mixins/createEvented';
 
-import App, { ToAbsMid } from 'dojo-app/App';
+import App, { ActionLike, ToAbsMid } from 'dojo-app/App';
 
 import canCloseTab from './actions/canCloseTab';
 import { popList, pushList } from './actions/list';
@@ -248,7 +249,7 @@ Promise.all([
 	/**
 	 * Connect the buttons onclick to the action
 	 */
-	remove.on('click', popList);
+	(<Evented> remove).on('click', popList);
 
 	/**
 	 * An action that will take the value from the text input, push it onto the list and patch
@@ -259,12 +260,12 @@ Promise.all([
 	/**
 	 * Connect the buttons onclick to the action
 	 */
-	add.on('click', pushList);
+	(<Evented> add).on('click', pushList);
 
-	tab3.on('close', closeTab);
+	(<Evented> tab3).on('close', <ActionLike> closeTab);
 
 	app.registerAction('can-close-tab', canCloseTab);
-	canClose.on('click', canCloseTab);
+	(<Evented> canClose).on('click', canCloseTab);
 
 	/**
 	 * Attach the VDOM
