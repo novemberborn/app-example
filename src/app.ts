@@ -182,14 +182,14 @@ app.loadDefinition({
 app.loadDefinition({
 	actions: [
 		{
-			id: 'closeTab',
-			factory: './actions/closeTab'
+			id: 'close-tab',
+			factory: './actions/closeTab',
+			stateFrom: 'actions'
 		}
 	]
 });
 
 Promise.all([
-	app.getStore('actions'),
 	...[
 		'header',
 		'tabbed-panel',
@@ -207,9 +207,8 @@ Promise.all([
 		'tab-3-content',
 		'can-close'
 	].map(id => app.getWidget(id)),
-	app.getAction('closeTab')
+	app.getAction('close-tab')
 ]).then(([
-	actions,
 	header,
 	tabbedPanel,
 	tab1,
@@ -262,7 +261,6 @@ Promise.all([
 	 */
 	add.on('click', pushList);
 
-	closeTab.observeState('close-tab', actions);
 	tab3.on('close', closeTab);
 
 	app.registerAction('can-close-tab', canCloseTab);
