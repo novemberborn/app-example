@@ -274,4 +274,6 @@ Promise.all([
 		<Projectable> tabbedPanel
 	]);
 	projector.attach();
+}).catch((err) => {
+	setTimeout(() => { throw err; }, 0);
 });
