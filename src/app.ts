@@ -16,16 +16,15 @@ import projector from 'dojo-widgets/projector';
 import { ParentMixin, Child } from 'dojo-widgets/mixins/createParentMixin';
 import { Destroyable } from 'dojo-compose/mixins/createDestroyable';
 
-import App from 'dojo-app/App';
+import App, { Require } from 'dojo-app/App';
 
-import closeTab from './actions/closeTab';
 import canCloseTab from './actions/canCloseTab';
 import { popList, pushList } from './actions/list';
 
 type Appendable = ParentMixin<Child>;
 type Projectable = Destroyable & RenderableMixin;
 
-const app = new App();
+const app = new App({ require: <Require> require });
 
 /**
  * A memory store which handles the widget states
@@ -180,6 +179,15 @@ app.loadDefinition({
 	]
 });
 
+app.loadDefinition({
+	actions: [
+		{
+			id: 'closeTab',
+			factory: './actions/closeTab'
+		}
+	]
+});
+
 Promise.all([
 	app.getStore('actions'),
 	...[
@@ -198,7 +206,8 @@ Promise.all([
 		'tab-3',
 		'tab-3-content',
 		'can-close'
-	].map(id => app.getWidget(id))
+	].map(id => app.getWidget(id)),
+	app.getAction('closeTab')
 ]).then(([
 	actions,
 	header,
@@ -215,7 +224,8 @@ Promise.all([
 	tab2Content,
 	tab3,
 	tab3Content,
-	canClose
+	canClose,
+	closeTab
 ]) => {
 	(<Appendable> tabbedPanel).append(<Child> tab1);
 	(<Appendable> tab1).append(<Child> layoutContainer);
