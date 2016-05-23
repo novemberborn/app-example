@@ -262,7 +262,6 @@ Promise.all([
 	 */
 	add.on('click', pushList);
 
-	app.registerAction('close-tab', closeTab);
 	closeTab.observeState('close-tab', actions);
 	tab3.on('close', closeTab);
 
