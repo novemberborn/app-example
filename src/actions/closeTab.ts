@@ -1,5 +1,5 @@
 import createAction from 'dojo-actions/createAction';
-import { CombinedRegistry } from 'dojo-app/App';
+import { CombinedRegistry } from 'dojo-app/createApp';
 
 export default function (registry: CombinedRegistry) {
 	return registry.getStore('widgets').then((store) => {

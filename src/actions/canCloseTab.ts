@@ -1,5 +1,5 @@
 import createAction from 'dojo-actions/createAction';
-import { CombinedRegistry } from 'dojo-app/App';
+import { CombinedRegistry } from 'dojo-app/createApp';
 import Promise from 'dojo-core/Promise';
 import { MemoryStore } from 'dojo-widgets/util/createMemoryStore';
 

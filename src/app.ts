@@ -17,7 +17,7 @@ import { ParentMixin, Child } from 'dojo-widgets/mixins/createParentMixin';
 import { Destroyable } from 'dojo-compose/mixins/createDestroyable';
 import { Evented } from 'dojo-compose/mixins/createEvented';
 
-import App, { ActionLike, ToAbsMid } from 'dojo-app/App';
+import createApp, { ActionLike } from 'dojo-app/createApp';
 
 import canCloseTab from './actions/canCloseTab';
 import { popList, pushList } from './actions/list';
@@ -25,7 +25,7 @@ import { popList, pushList } from './actions/list';
 type Appendable = ParentMixin<Child>;
 type Projectable = Destroyable & RenderableMixin;
 
-const app = new App({ toAbsMid: <ToAbsMid> require.toAbsMid });
+const app = createApp({ toAbsMid: require.toAbsMid });
 
 /**
  * A memory store which handles the widget states

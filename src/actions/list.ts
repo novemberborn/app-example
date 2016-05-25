@@ -1,5 +1,5 @@
 import createAction from 'dojo-actions/createAction';
-import { CombinedRegistry, Identifier } from 'dojo-app/App';
+import { CombinedRegistry, Identifier } from 'dojo-app/createApp';
 import Promise from 'dojo-core/Promise';
 import { TextInput } from 'dojo-widgets/createTextInput';
 import { MemoryStore } from 'dojo-widgets/util/createMemoryStore';
