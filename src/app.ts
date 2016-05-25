@@ -76,6 +76,20 @@ app.loadDefinition({
 	]
 });
 
+app.loadDefinition({
+	actions: [
+		{
+			id: 'close-tab',
+			factory: './actions/closeTab',
+			stateFrom: 'actions'
+		}
+	]
+});
+
+app.registerAction('pop-list', popList);
+app.registerAction('push-list', pushList);
+app.registerAction('can-close-tab', canCloseTab);
+
 /**
  * A header widget
  */
@@ -180,16 +194,6 @@ app.loadDefinition({
 	]
 });
 
-app.loadDefinition({
-	actions: [
-		{
-			id: 'close-tab',
-			factory: './actions/closeTab',
-			stateFrom: 'actions'
-		}
-	]
-});
-
 Promise.all([
 	...[
 		'header',
@@ -241,30 +245,9 @@ Promise.all([
 	(<Appendable> tab3).append(<Child> tab3Content);
 	(<Appendable> tab3).append(<Child> canClose);
 
-	/**
-	 * An action that will pop an item from the list item and patch the items into the widgetstore
-	 */
-	app.registerAction('pop-list', popList);
-
-	/**
-	 * Connect the buttons onclick to the action
-	 */
 	(<Evented> remove).on('click', popList);
-
-	/**
-	 * An action that will take the value from the text input, push it onto the list and patch
-	 * the widget store
-	 */
-	app.registerAction('push-list', pushList);
-
-	/**
-	 * Connect the buttons onclick to the action
-	 */
 	(<Evented> add).on('click', pushList);
-
 	(<Evented> tab3).on('close', <ActionLike> closeTab);
-
-	app.registerAction('can-close-tab', canCloseTab);
 	(<Evented> canClose).on('click', canCloseTab);
 
 	/**
