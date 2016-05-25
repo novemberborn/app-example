@@ -15,9 +15,8 @@ import createWidget from 'dojo-widgets/createWidget';
 import projector from 'dojo-widgets/projector';
 import { ParentMixin, Child } from 'dojo-widgets/mixins/createParentMixin';
 import { Destroyable } from 'dojo-compose/mixins/createDestroyable';
-import { Evented } from 'dojo-compose/mixins/createEvented';
 
-import createApp, { ActionLike } from 'dojo-app/createApp';
+import createApp from 'dojo-app/createApp';
 
 import canCloseTab from './actions/canCloseTab';
 import { popList, pushList } from './actions/list';
@@ -134,7 +133,10 @@ app.loadDefinition({
 		{
 			id: 'remove',
 			factory: createButton,
-			stateFrom: 'widgets'
+			stateFrom: 'widgets',
+			listeners: {
+				click: 'pop-list'
+			}
 		},
 		/**
 		 * A widget for collecting the value of the list
@@ -150,7 +152,10 @@ app.loadDefinition({
 		{
 			id: 'add',
 			factory: createButton,
-			stateFrom: 'widgets'
+			stateFrom: 'widgets',
+			listeners: {
+				click: 'push-list'
+			}
 		},
 		/**
 		 * The list widget
@@ -176,7 +181,10 @@ app.loadDefinition({
 		{
 			id: 'tab-3',
 			factory: createPanel,
-			stateFrom: 'widgets'
+			stateFrom: 'widgets',
+			listeners: {
+				close: 'close-tab'
+			}
 		},
 		{
 			id: 'tab-3-content',
@@ -189,7 +197,10 @@ app.loadDefinition({
 		{
 			id: 'can-close',
 			factory: createButton,
-			stateFrom: 'widgets'
+			stateFrom: 'widgets',
+			listeners: {
+				click: 'can-close-tab'
+			}
 		}
 	]
 });
@@ -211,8 +222,7 @@ Promise.all([
 		'tab-3',
 		'tab-3-content',
 		'can-close'
-	].map(id => app.getWidget(id)),
-	app.getAction('close-tab')
+	].map(id => app.getWidget(id))
 ]).then(([
 	header,
 	tabbedPanel,
@@ -228,8 +238,7 @@ Promise.all([
 	tab2Content,
 	tab3,
 	tab3Content,
-	canClose,
-	closeTab
+	canClose
 ]) => {
 	(<Appendable> tabbedPanel).append(<Child> tab1);
 	(<Appendable> tab1).append(<Child> layoutContainer);
@@ -244,11 +253,6 @@ Promise.all([
 	(<Appendable> tabbedPanel).append(<Child> tab3);
 	(<Appendable> tab3).append(<Child> tab3Content);
 	(<Appendable> tab3).append(<Child> canClose);
-
-	(<Evented> remove).on('click', popList);
-	(<Evented> add).on('click', pushList);
-	(<Evented> tab3).on('close', <ActionLike> closeTab);
-	(<Evented> canClose).on('click', canCloseTab);
 
 	/**
 	 * Attach the VDOM
