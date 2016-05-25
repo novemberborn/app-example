@@ -1,5 +1,5 @@
 import createAction from 'dojo-actions/createAction';
-import { CombinedRegistry, Identifier } from 'dojo-app/createApp';
+import { CombinedRegistry } from 'dojo-app/createApp';
 import Promise from 'dojo-core/Promise';
 import { TextInput } from 'dojo-widgets/createTextInput';
 import { MemoryStore } from 'dojo-widgets/util/createMemoryStore';
@@ -15,50 +15,52 @@ interface ListState {
 }
 
 interface WithStore {
-	store?: Promise<MemoryStore<ListState>>;
+	store?: MemoryStore<ListState>;
 }
 
 interface PushList extends WithStore {
-	getWidget?(id: 'first-name'): Promise<TextInput>;
-	getWidget?(id: Identifier): Promise<any>;
+	firstName?: TextInput;
 }
 
 export const pushList = createAction.extend<PushList>({})({
-	register(registry: CombinedRegistry) {
-		const action = <PushList> this;
-		action.getWidget = registry.getWidget;
-		action.store = registry.getStore('widgets');
+	configure(registry: CombinedRegistry) {
+		return Promise.all([
+			registry.getWidget('first-name'),
+			registry.getStore('widgets')
+		]).then(([widget, store]) => {
+			const action = <PushList> this;
+			action.firstName = <TextInput> widget;
+			action.store = <MemoryStore<ListState>> store;
+		});
 	},
 
 	do() {
-		const { getWidget, store } = <PushList> this;
+		const {
+			firstName: { value: label },
+			store
+		} = <PushList> this;
 
-		return getWidget('first-name').then(({ value: label }) => {
-			return store.then(store => {
-				return store.get('list').then(({ items }) => {
-					items.push({ id: items.length, label });
-					return store
-						.patch({ id: 'list', items }) /* patch the list */
-						.patch({ id: 'first-name', value: label }); /* patch the value of fisrt-name */
-				});
-			});
+		return store.get('list').then(({ items }) => {
+			items.push({ id: items.length, label });
+			return store
+				.patch({ id: 'list', items }) /* patch the list */
+				.patch({ id: 'first-name', value: label }); /* patch the value of fisrt-name */
 		});
 	}
 });
 
 export const popList = createAction.extend<WithStore>({})({
-	register(registry: CombinedRegistry) {
-		const action = <WithStore> this;
-		action.store = registry.getStore('widgets');
+	configure(registry: CombinedRegistry) {
+		return registry.getStore('widgets').then(store => {
+			(<WithStore> this).store = <MemoryStore<ListState>> store;
+		});
 	},
 
 	do() {
 		const { store } = <WithStore> this;
-		return store.then(store => {
-			return store.get('list').then(({ items }) => {
-				items.pop();
-				return store.patch({ id: 'list', items });
-			});
+		return store.get('list').then(({ items }) => {
+			items.pop();
+			return store.patch({ id: 'list', items });
 		});
 	}
 });

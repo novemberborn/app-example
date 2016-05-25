@@ -4,24 +4,26 @@ import Promise from 'dojo-core/Promise';
 import { MemoryStore } from 'dojo-widgets/util/createMemoryStore';
 
 interface WithStores {
-	actions?: Promise<MemoryStore<Object>>;
-	widgets?: Promise<MemoryStore<Object>>;
+	actions?: MemoryStore<Object>;
+	widgets?: MemoryStore<Object>;
 }
 
 export default createAction.extend<WithStores>({})({
-	register(registry: CombinedRegistry) {
-		const action = <WithStores> this;
-		action.actions = registry.getStore('actions');
-		action.widgets = registry.getStore('widgets');
+	configure(registry: CombinedRegistry) {
+		return Promise.all([
+			registry.getStore('actions'),
+			registry.getStore('widgets')
+		]).then(([actions, widgets]) => {
+			const action = <WithStores> this;
+			action.actions = <MemoryStore<Object>> actions;
+			action.widgets = <MemoryStore<Object>> widgets;
+		});
 	},
 
 	do() {
 		const { actions, widgets } = <WithStores> this;
-		return Promise.all([actions, widgets]).then(([actions, widgets]) => {
-			return actions.patch({ canClose: true }, { id: 'close-tab' })
-				.then(() => {
-					return widgets.patch({ label: 'Now you can close the tab!!!' }, { id: 'tab-3-content'});
-				});
+		return actions.patch({ canClose: true }, { id: 'close-tab' }).then(() => {
+			return widgets.patch({ label: 'Now you can close the tab!!!' }, { id: 'tab-3-content'});
 		});
 	}
 });
