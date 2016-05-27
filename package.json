@@ -18,7 +18,6 @@
 		"dojo-core": ">=2.0.0-alpha.5",
 		"dojo-loader": ">=2.0.0-beta.4",
 		"dojo-typings": "dojo/typings",
-		"dojo-widgets": ">=2.0.0-alpha",
 		"immutable": "^3.8.1",
 		"maquette": "^2.3.2"
 	},
