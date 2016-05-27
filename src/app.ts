@@ -7,22 +7,18 @@ import createMemoryStore from 'dojo-widgets/util/createMemoryStore';
 import createButton from 'dojo-widgets/createButton';
 import createList from 'dojo-widgets/createList';
 import createPanel from 'dojo-widgets/createPanel';
-import { RenderableMixin } from 'dojo-widgets/mixins/createRenderable';
 import createResizePanel from 'dojo-widgets/createResizePanel';
 import createTabbedPanel from 'dojo-widgets/createTabbedPanel';
 import createTextInput from 'dojo-widgets/createTextInput';
 import createWidget from 'dojo-widgets/createWidget';
-import projector from 'dojo-widgets/projector';
 import { ParentMixin, Child } from 'dojo-widgets/mixins/createParentMixin';
-import { Destroyable } from 'dojo-compose/mixins/createDestroyable';
 
-import createApp from 'dojo-app/createApp';
+import createApp, { WidgetLike } from 'dojo-app/createApp';
 
 import canCloseTab from './actions/canCloseTab';
 import { popList, pushList } from './actions/list';
 
-type Appendable = ParentMixin<Child>;
-type Projectable = Destroyable & RenderableMixin;
+type Appendable = WidgetLike & ParentMixin<Child>;
 
 const app = createApp({ toAbsMid: require.toAbsMid });
 
@@ -207,7 +203,6 @@ app.loadDefinition({
 
 Promise.all([
 	...[
-		'header',
 		'tabbed-panel',
 		'tab-1',
 		'layout-container',
@@ -224,7 +219,6 @@ Promise.all([
 		'can-close'
 	].map(id => app.getWidget(id))
 ]).then(([
-	header,
 	tabbedPanel,
 	tab1,
 	layoutContainer,
@@ -257,11 +251,7 @@ Promise.all([
 	/**
 	 * Attach the VDOM
 	 */
-	projector.append([
-		<Projectable> header,
-		<Projectable> tabbedPanel
-	]);
-	projector.attach();
+	app.realize(document.body);
 }).catch((err) => {
 	setTimeout(() => { throw err; }, 0);
 });

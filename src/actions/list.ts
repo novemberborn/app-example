@@ -24,7 +24,7 @@ interface PushList extends WithStore {
 
 export const pushList = createAction.extend<PushList>({})({
 	configure(registry: CombinedRegistry) {
-		return Promise.all([
+		return Promise.all<any>([
 			registry.getWidget('first-name'),
 			registry.getStore('widgets')
 		]).then(([widget, store]) => {
