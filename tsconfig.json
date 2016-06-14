@@ -10,13 +10,11 @@
 		"target": "es5"
 	},
 	"filesGlob": [
-		"./node_modules/dojo-app/dist/umd/dojo-app.d.ts",
 		"./typings/index.d.ts",
 		"./src/**/*.ts",
 		"./tests/**/*.ts"
 	],
 	"files": [
-		"./node_modules/dojo-app/dist/umd/dojo-app.d.ts",
 		"./typings/index.d.ts",
 		"./src/actions/canCloseTab.ts",
 		"./src/actions/closeTab.ts",
