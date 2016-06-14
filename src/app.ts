@@ -251,7 +251,7 @@ Promise.all([
 	/**
 	 * Attach the VDOM
 	 */
-	app.realize(document.body);
+	return app.realize(document.body);
 }).catch((err) => {
 	setTimeout(() => { throw err; }, 0);
 });
