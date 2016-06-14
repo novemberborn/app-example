@@ -16,6 +16,7 @@
 		"dojo-actions": ">=2.0.0-alpha.3",
 		"dojo-compose": ">=2.0.0-beta.5",
 		"dojo-core": ">=2.0.0-alpha.7",
+		"dojo-dom": "^2.0.0-alpha.1",
 		"dojo-loader": ">=2.0.0-beta.5",
 		"dojo-typings": "dojo/typings",
 		"dojo-widgets": ">=2.0.0-alpha",
