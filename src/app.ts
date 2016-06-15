@@ -11,14 +11,14 @@ import createResizePanel from 'dojo-widgets/createResizePanel';
 import createTabbedPanel from 'dojo-widgets/createTabbedPanel';
 import createTextInput from 'dojo-widgets/createTextInput';
 import createWidget from 'dojo-widgets/createWidget';
-import { ParentMixin, Child } from 'dojo-widgets/mixins/createParentMixin';
+import { ParentListMixin } from 'dojo-widgets/mixins/createParentListMixin';
 
 import createApp, { WidgetLike } from 'dojo-app/createApp';
 
 import canCloseTab from './actions/canCloseTab';
 import { popList, pushList } from './actions/list';
 
-type Appendable = WidgetLike & ParentMixin<Child>;
+type Appendable = WidgetLike & ParentListMixin<WidgetLike>;
 
 const app = createApp({ toAbsMid: require.toAbsMid });
 
@@ -203,15 +203,10 @@ app.loadDefinition({
 
 Promise.all([
 	...[
-		'tabbed-panel',
-		'tab-1',
-		'layout-container',
-		'panel-fixed',
 		'panel-resize',
 		'remove',
 		'first-name',
 		'add',
-		'list',
 		'tab-2',
 		'tab-2-content',
 		'tab-3',
@@ -219,34 +214,22 @@ Promise.all([
 		'can-close'
 	].map(id => app.getWidget(id))
 ]).then(([
-	tabbedPanel,
-	tab1,
-	layoutContainer,
-	panelFixed,
 	panelResize,
 	remove,
 	firstName,
 	add,
-	list,
 	tab2,
 	tab2Content,
 	tab3,
 	tab3Content,
 	canClose
 ]) => {
-	(<Appendable> tabbedPanel).append(<Child> tab1);
-	(<Appendable> tab1).append(<Child> layoutContainer);
-	(<Appendable> layoutContainer).append(<Child> panelFixed);
-	(<Appendable> panelFixed).append(<Child> panelResize);
-	(<Appendable> panelResize).append(<Child> remove);
-	(<Appendable> panelResize).append(<Child> firstName);
-	(<Appendable> panelResize).append(<Child> add);
-	(<Appendable> panelFixed).append(<Child> list);
-	(<Appendable> tabbedPanel).append(<Child> tab2);
-	(<Appendable> tab2).append(<Child> tab2Content);
-	(<Appendable> tabbedPanel).append(<Child> tab3);
-	(<Appendable> tab3).append(<Child> tab3Content);
-	(<Appendable> tab3).append(<Child> canClose);
+	(<Appendable> panelResize).append(remove);
+	(<Appendable> panelResize).append(firstName);
+	(<Appendable> panelResize).append(add);
+	(<Appendable> tab2).append(tab2Content);
+	(<Appendable> tab3).append(tab3Content);
+	(<Appendable> tab3).append(canClose);
 
 	/**
 	 * Attach the VDOM
