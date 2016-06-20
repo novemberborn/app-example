@@ -28,7 +28,7 @@ const app = createApp({ toAbsMid: require.toAbsMid });
 const widgets = createMemoryStore({
 	data: [
 		{ id: 'header', label: 'Dojo 2 Example Application'},
-		// { id: 'tabbed-panel', classes: [ 'pad-1em' ] },
+		{ id: 'tabbed-panel', classes: [ 'pad-1em' ] },
 		{ id: 'tab-1', label: 'Tab 1', closeable: false },
 		{ id: 'layout-container', classes: [ 'horizontal' ] },
 		{ id: 'panel-fixed', classes: [ 'fixed' ] },
@@ -95,11 +95,6 @@ app.registerWidgetFactory('header', () => {
 		tagName: 'h1'
 	}));
 });
-
-// app.registerWidget('tabbed-panel', createTabbedPanel({
-// 	id: 'tabbed-panel',
-// 	stateFrom: widgets
-// }));
 
 app.registerCustomElementFactory('tabbed-panel', createTabbedPanel);
 
