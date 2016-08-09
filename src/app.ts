@@ -198,19 +198,17 @@ app.loadDefinition({
 	]
 });
 
-Promise.all([
-	...[
-		'panel-resize',
-		'remove',
-		'first-name',
-		'add',
-		'tab-2',
-		'tab-2-content',
-		'tab-3',
-		'tab-3-content',
-		'can-close'
-	].map(id => app.getWidget(id))
-]).then(([
+const ready = Promise.all([
+	'panel-resize',
+	'remove',
+	'first-name',
+	'add',
+	'tab-2',
+	'tab-2-content',
+	'tab-3',
+	'tab-3-content',
+	'can-close'
+].map(id => app.getWidget(id))).then(([
 	panelResize,
 	remove,
 	firstName,
@@ -232,6 +230,7 @@ Promise.all([
 	 * Attach the VDOM
 	 */
 	return app.realize(document.body);
-}).catch((err) => {
-	setTimeout(() => { throw err; }, 0);
 });
+
+// This will hook into unhandledRejection helpers in dev tools
+(<any> window).Promise.resolve(ready);
