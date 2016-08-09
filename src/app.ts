@@ -81,10 +81,6 @@ app.loadDefinition({
 	]
 });
 
-app.registerAction('pop-list', popList);
-app.registerAction('push-list', pushList);
-app.registerAction('can-close-tab', canCloseTab);
-
 /**
  * A header widget
  */
@@ -197,6 +193,10 @@ app.loadDefinition({
 		}
 	]
 });
+
+app.registerAction('pop-list', popList);
+app.registerAction('push-list', pushList);
+app.registerAction('can-close-tab', canCloseTab);
 
 const ready = Promise.all([
 	'panel-resize',
