@@ -113,38 +113,40 @@ app.loadDefinition({
 		},
 		{
 			id: 'panel-resize',
+			children: [
+				/**
+				 * Button will remove item from list
+				 */
+				{
+					id: 'remove',
+					factory: createButton,
+					stateFrom: 'widgets',
+					listeners: {
+						click: 'pop-list'
+					}
+				},
+				/**
+				 * A widget for collecting the value of the list
+				 */
+				{
+					id: 'first-name',
+					factory: createTextInput,
+					stateFrom: 'widgets'
+				},
+				/**
+				 * A widget that will add the value to the list
+				 */
+				{
+					id: 'add',
+					factory: createButton,
+					stateFrom: 'widgets',
+					listeners: {
+						click: 'push-list'
+					}
+				}
+			],
 			factory: createResizePanel,
 			stateFrom: 'widgets'
-		},
-		/**
-		 * Button will remove item from list
-		 */
-		{
-			id: 'remove',
-			factory: createButton,
-			stateFrom: 'widgets',
-			listeners: {
-				click: 'pop-list'
-			}
-		},
-		/**
-		 * A widget for collecting the value of the list
-		 */
-		{
-			id: 'first-name',
-			factory: createTextInput,
-			stateFrom: 'widgets'
-		},
-		/**
-		 * A widget that will add the value to the list
-		 */
-		{
-			id: 'add',
-			factory: createButton,
-			stateFrom: 'widgets',
-			listeners: {
-				click: 'push-list'
-			}
 		},
 		/**
 		 * The list widget
@@ -199,29 +201,18 @@ app.registerAction('push-list', pushList);
 app.registerAction('can-close-tab', canCloseTab);
 
 const ready = Promise.all([
-	'panel-resize',
-	'remove',
-	'first-name',
-	'add',
 	'tab-2',
 	'tab-2-content',
 	'tab-3',
 	'tab-3-content',
 	'can-close'
 ].map(id => app.getWidget(id))).then(([
-	panelResize,
-	remove,
-	firstName,
-	add,
 	tab2,
 	tab2Content,
 	tab3,
 	tab3Content,
 	canClose
 ]) => {
-	(<Appendable> panelResize).append(remove);
-	(<Appendable> panelResize).append(firstName);
-	(<Appendable> panelResize).append(add);
 	(<Appendable> tab2).append(tab2Content);
 	(<Appendable> tab3).append(tab3Content);
 	(<Appendable> tab3).append(canClose);
