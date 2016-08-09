@@ -10,20 +10,20 @@
 	<!-- Loading the rest of the environment -->
 	<script src="./index.js"></script>
 
-	<projection-surface>
-		<attach-widget id="header"></attach-widget>
+	<widget-projector>
+		<widget-instance id="header"></widget-instance>
 		<tabbed-panel id="tabbed-panel" data-options='{"stateFrom":"widgets"}'>
-			<attach-widget id="tab-1">
-				<attach-widget id="layout-container">
-					<attach-widget id="panel-fixed">
-						<attach-widget id="panel-resize"></attach-widget>
-						<attach-widget id="list"></attach-widget>
-					</attach-widget>
-				</attach-widget>
-			</attach-widget>
-			<attach-widget id="tab-2"></attach-widget>
-			<attach-widget id="tab-3"></attach-widget>
+			<widget-instance id="tab-1">
+				<widget-instance id="layout-container">
+					<widget-instance id="panel-fixed">
+						<widget-instance id="panel-resize"></widget-instance>
+						<widget-instance id="list"></widget-instance>
+					</widget-instance>
+				</widget-instance>
+			</widget-instance>
+			<widget-instance id="tab-2"></widget-instance>
+			<widget-instance id="tab-3"></widget-instance>
 		</tabbed-panel>
-	</projection-surface>
+	</widget-projector>
 </body>
 </html>
