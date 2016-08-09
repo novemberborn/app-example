@@ -2,7 +2,7 @@
  * An example basic application using stores/widgets/actions
  * @module dojo-app-example/app
  */
-import Promise from 'dojo-core/Promise';
+import Promise from 'dojo-shim/Promise';
 import createMemoryStore from 'dojo-widgets/util/createMemoryStore';
 import createButton from 'dojo-widgets/createButton';
 import createList from 'dojo-widgets/createList';

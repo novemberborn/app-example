@@ -1,6 +1,6 @@
 import createAction from 'dojo-actions/createAction';
 import { CombinedRegistry } from 'dojo-app/createApp';
-import Promise from 'dojo-core/Promise';
+import Promise from 'dojo-shim/Promise';
 import { MemoryStore } from 'dojo-widgets/util/createMemoryStore';
 
 interface WithStores {
