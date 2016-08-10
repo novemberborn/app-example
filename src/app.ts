@@ -15,7 +15,6 @@ import { ParentListMixin } from 'dojo-widgets/mixins/createParentListMixin';
 
 import createApp, { WidgetLike } from 'dojo-app/createApp';
 
-import canCloseTab from './actions/canCloseTab';
 import { popList, pushList } from './actions/list';
 
 type Appendable = WidgetLike & ParentListMixin<WidgetLike>;
@@ -55,21 +54,6 @@ const widgets = createMemoryStore({
 	]
 });
 app.registerStore('widgets', widgets);
-
-app.loadDefinition({
-	stores: [
-		{
-			factory: 'dojo-widgets/util/createMemoryStore',
-			id: 'actions',
-			options: {
-				data: [
-					{ id: 'close-tab', canClose: false, enabled: true },
-					{ id: 'can-close-tab', enabled: true }
-				]
-			}
-		}
-	]
-});
 
 app.loadDefinition({
 	actions: [
@@ -196,40 +180,41 @@ app.loadDefinition({
 
 app.registerAction('pop-list', popList);
 app.registerAction('push-list', pushList);
-app.registerAction('can-close-tab', canCloseTab);
 
-const ready = Promise.all([
-	'panel-resize',
-	'remove',
-	'first-name',
-	'add',
-	'tab-2',
-	'tab-2-content',
-	'tab-3',
-	'tab-3-content',
-	'can-close'
-].map(id => app.getWidget(id))).then(([
-	panelResize,
-	remove,
-	firstName,
-	add,
-	tab2,
-	tab2Content,
-	tab3,
-	tab3Content,
-	canClose
-]) => {
-	(<Appendable> panelResize).append(remove);
-	(<Appendable> panelResize).append(firstName);
-	(<Appendable> panelResize).append(add);
-	(<Appendable> tab2).append(tab2Content);
-	(<Appendable> tab3).append(tab3Content);
-	(<Appendable> tab3).append(canClose);
+const ready = app.realize(document.getElementById('declarative')).then(() => {
+	return Promise.all([
+		'panel-resize',
+		'remove',
+		'first-name',
+		'add',
+		'tab-2',
+		'tab-2-content',
+		'tab-3',
+		'tab-3-content',
+		'can-close'
+	].map(id => app.getWidget(id))).then(([
+		panelResize,
+		remove,
+		firstName,
+		add,
+		tab2,
+		tab2Content,
+		tab3,
+		tab3Content,
+		canClose
+	]) => {
+		(<Appendable> panelResize).append(remove);
+		(<Appendable> panelResize).append(firstName);
+		(<Appendable> panelResize).append(add);
+		(<Appendable> tab2).append(tab2Content);
+		(<Appendable> tab3).append(tab3Content);
+		(<Appendable> tab3).append(canClose);
 
-	/**
-	 * Attach the VDOM
-	 */
-	return app.realize(document.body);
+		/**
+		 * Attach the VDOM
+		 */
+		return app.realize(document.body);
+	});
 });
 
 // This will hook into unhandledRejection helpers in dev tools

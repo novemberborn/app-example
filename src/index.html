@@ -10,6 +10,11 @@
 	<!-- Loading the rest of the environment -->
 	<script src="./index.js"></script>
 
+	<div id="declarative">
+		<app-store id="actions" data-factory="dojo-widgets/util/createMemoryStore" data-options='{"data":[{"id":"close-tab","canClose":false,"enabled":true},{"id":"can-close-tab","enabled":true}]}'></app-store>
+		<app-action data-as="can-close-tab" data-from="src/actions/canCloseTab"></app-action>
+	</div>
+
 	<widget-projector>
 		<widget-instance id="header"></widget-instance>
 		<tabbed-panel id="tabbed-panel" data-options='{"stateFrom":"widgets"}'>
